@@ -32,6 +32,13 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
+        PlayerStats player = FindFirstObjectByType<PlayerStats>();
+
+        if (player != null)
+        {
+            player.GainExp(stats.expReward);
+        }
+
         Destroy(gameObject);
     }
 }

@@ -1,0 +1,47 @@
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public class PlayerStats : MonoBehaviour
+{
+    [Header("Level")]
+    [SerializeField] private int level = 1;
+
+    [Header("Experience")]
+    [SerializeField] private int currentExp = 0;
+    [SerializeField] private int requiredExp = 10;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        
+    }
+
+    public void GainExp(int amount)
+    {
+        currentExp += amount;
+
+        Debug.Log($"Gained {amount} EXP");
+
+        CheckLevelUp();
+    }
+
+    private void CheckLevelUp()
+    {
+        if (currentExp >= requiredExp)
+        {
+            currentExp -= requiredExp;
+
+            level++;
+
+            requiredExp += 10;
+
+            Debug.Log($"Level up! Current level: {level}");
+        }
+    }
+}
