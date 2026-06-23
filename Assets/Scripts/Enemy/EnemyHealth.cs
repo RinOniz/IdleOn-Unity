@@ -2,14 +2,16 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] private int maxHp = 10;
+    private EnemyStats stats;
 
     private int currentHp;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        currentHp = maxHp;
+        stats = GetComponent<EnemyStats>();
+
+        currentHp = stats.maxHP;
     }
 
     // Update is called once per frame
