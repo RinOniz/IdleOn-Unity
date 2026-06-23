@@ -1,10 +1,13 @@
 using UnityEngine;
+using System;
 
 public class EnemyHealth : MonoBehaviour
 {
     private EnemyStats stats;
 
     private int currentHp;
+
+    public event Action OnEnemyDeath;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -43,6 +46,8 @@ public class EnemyHealth : MonoBehaviour
         {
             Instantiate(stats.dropPrefab, transform.position, Quaternion.identity);
         }
+
+        OnEnemyDeath?.Invoke();
 
         Destroy(gameObject);
     }
