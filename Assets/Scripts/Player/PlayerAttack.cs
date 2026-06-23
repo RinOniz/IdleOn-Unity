@@ -6,13 +6,14 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float attackCooldown = 1.0f;
 
     private EnemyHealth currentTarget;
+    private PlayerStats playerStats;
 
     private float attackTimer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        
+        playerStats = GetComponent<PlayerStats>();
     }
 
     // Update is called once per frame
@@ -25,9 +26,15 @@ public class PlayerAttack : MonoBehaviour
 
     private void Attack()
     {
-        currentTarget.TakeDamage(5);
+        EnemyStats enemyStats = currentTarget.GetComponent<EnemyStats>();
 
-        Debug.Log("Attacked " + currentTarget.name);
+        int damage = playerStats.attack - enemyStats.defense;
+
+        damage = Mathf.Max(1, damage);
+
+        currentTarget.TakeDamage(damage);
+
+        Debug.Log($"Attack {currentTarget.name} for {damage} damage");
     }
 
     private void OnDrawGizmosSelected()
