@@ -39,6 +39,11 @@ public class EnemyHealth : MonoBehaviour
             player.GainExp(stats.expReward);
         }
 
+        if (stats.dropPrefab != null)
+        {
+            Instantiate(stats.dropPrefab, transform.position, Quaternion.identity);
+        }
+
         Destroy(gameObject);
     }
 }

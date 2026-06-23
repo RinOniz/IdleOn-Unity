@@ -4,11 +4,11 @@ using UnityEngine.UIElements;
 public class PlayerStats : MonoBehaviour
 {
     [Header("Level")]
-    [SerializeField] private int level = 1;
+    public int level = 1;
 
     [Header("Experience")]
-    [SerializeField] private int currentExp = 0;
-    [SerializeField] private int requiredExp = 10;
+    public int currentExp = 0;
+    public int requiredExp = 10;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
