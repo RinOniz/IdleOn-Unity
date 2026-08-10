@@ -1,4 +1,5 @@
 # Unity
+
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -15,9 +16,13 @@ MemoryCaptures/
 *.csproj
 *.sln
 *.user
+*.suo
 
 # Rider
 .idea/
+
+# VS Code
+.vscode/
 
 # Windows
 Thumbs.db
