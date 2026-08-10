@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,16 +19,41 @@ public class PlayerStats : MonoBehaviour
     public int maxHP = 100;
     public int currentHP;
 
+    private SpriteRenderer spriteRenderer;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         currentHP = maxHP;
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     private void Update()
     {
         
+    }
+
+    public void TakeDamage(int damage)
+    {
+        int actualDamage = Mathf.Max(0, damage - defense);
+
+        currentHP -= actualDamage;
+
+        if (currentHP < 0)
+        {
+            currentHP = 0;
+        }
+        
+        Debug.Log($"Took {actualDamage} damage. Current HP: {currentHP}");
+
+        StartCoroutine(FlashRed());
+
+        if (currentHP <= 0)
+        {
+            Debug.Log("Player has died.");
+        }
     }
 
     public void GainExp(int amount)
@@ -49,7 +75,7 @@ public class PlayerStats : MonoBehaviour
 
             attack += 2;
 
-            maxHP += 10;
+            maxHP += 5;
 
             currentHP = maxHP;
 
@@ -57,5 +83,14 @@ public class PlayerStats : MonoBehaviour
 
             Debug.Log($"Level up! Current level: {level}");
         }
+    }
+
+    private IEnumerator FlashRed()
+    {
+        spriteRenderer.color = Color.red;
+
+        yield return new WaitForSeconds(0.15f);
+
+        spriteRenderer.color = Color.white;
     }
 }
