@@ -5,17 +5,30 @@ public class LootItem : MonoBehaviour
     public ItemData itemData;
     public int amount = 1;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private PlayerInventory playerInventory;
+
+    private void Start()
     {
-        PlayerInventory inventory = collision.GetComponent<PlayerInventory>();
-
-        if (inventory != null)
+        if (itemData != null)
         {
-            bool pickedUp = inventory.AddItem(itemData, amount);
+            GetComponent<SpriteRenderer>().sprite = itemData.itemIcon;
+        }
 
-            if (pickedUp)
+        playerInventory = FindFirstObjectByType<PlayerInventory>();
+    }
+
+    private void OnMouseOver()
+    {
+        if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(0))
+        {
+            if (playerInventory != null)
             {
-                Destroy(gameObject);
+                bool pickedUp = playerInventory.AddItem(itemData, amount);
+
+                if (pickedUp)
+                {
+                    Destroy(gameObject);
+                }
             }
         }
     }
