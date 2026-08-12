@@ -53,6 +53,8 @@ public class PlayerStats : MonoBehaviour
         if (currentHP <= 0)
         {
             Debug.Log("Player has died.");
+
+            Destroy(gameObject);
         }
     }
 

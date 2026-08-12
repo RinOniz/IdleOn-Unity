@@ -1,17 +1,26 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    [Header("Spawn Settings")]
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private float respawnTime = 5f;
+    [SerializeField] private int maxEnemies = 5;
 
-    private GameObject currentEnemy;
+    [Header("Spawn Points")]
+    [SerializeField] private Transform[] spawnPoints;
+
+    private int currentEnemyCount = 0;  
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        SpawnEnemy();
+        for (int i = 0; i < maxEnemies; i++)
+        {
+            SpawnEnemy();
+        }
     }
 
     // Update is called once per frame
@@ -22,15 +31,28 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        currentEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+        if (spawnPoints.Length == 0)
+        {
+            Debug.LogWarning("Chua co Spawn Point nao trong danh sach!");
+            return;
+        }
 
-        EnemyHealth enemyHealth = currentEnemy.GetComponent<EnemyHealth>();
+        Transform randomPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-        enemyHealth.OnEnemyDeath += HandleEnemyDeath;
+        GameObject newEnemy = Instantiate(enemyPrefab, randomPoint.position, Quaternion.identity);
+        currentEnemyCount++;
+
+        EnemyHealth enemyHealth = newEnemy.GetComponent<EnemyHealth>();
+
+        if (enemyHealth != null)
+        {
+            enemyHealth.OnEnemyDeath += HandleEnemyDeath;
+        }
     }
 
     private void HandleEnemyDeath()
     {
+        currentEnemyCount--;
         StartCoroutine(RespawnCoroutine());
     }
 
@@ -38,6 +60,9 @@ public class EnemySpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(respawnTime);
 
-        SpawnEnemy();
+        if (currentEnemyCount < maxEnemies)
+        {
+            SpawnEnemy();
+        }
     }
 }

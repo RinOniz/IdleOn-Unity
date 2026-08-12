@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3267081674188636551}
   - component: {fileID: 6054475880310060291}
   - component: {fileID: 2793541090462364788}
+  - component: {fileID: 7055069647347243800}
   m_Layer: 8
   m_Name: Slime
   m_TagString: Untagged
@@ -164,7 +165,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &6054475880310060291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +195,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d98bb10ea4f07641b0a3558fa3ac536, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7055069647347243800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2377087712863476017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76addd8312c35034f82f203fc0c922da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 1
+  minIdleTime: 2
+  maxIdleTime: 4
+  moveDuration: 1
 --- !u!1 &5383225257748986771
 GameObject:
   m_ObjectHideFlags: 0
