@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LootItem : MonoBehaviour
 {
-    public string itemName = "Spore Cap";
+    public ItemData itemData;
     public int amount = 1;
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -11,9 +11,12 @@ public class LootItem : MonoBehaviour
 
         if (inventory != null)
         {
-            inventory.AddMobDrop(amount);
+            bool pickedUp = inventory.AddItem(itemData, amount);
 
-            Destroy(gameObject);
+            if (pickedUp)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,9 +16,8 @@ public class UIManager : MonoBehaviour
     public Image hpFillImage;
     public Image expFillImage;
 
-    [Header("Inventory Slots")]
-    public GameObject slot1Icon;
-    public TMP_Text slot1AmountText;
+    [Header("Inventory UI")]
+    public Transform inventoryGrid;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -41,19 +41,37 @@ public class UIManager : MonoBehaviour
 
         if (playerInventory != null && characterUIPanel.activeSelf)
         {
-            int amount = playerInventory.mobDrop;
+            for (int i = 0; i < playerInventory.slots.Count; i++)
+            {
+                InventorySlot slotData = playerInventory.slots[i];
 
-            if (amount > 0)
-            {
-                slot1Icon.SetActive(true);
-                slot1AmountText.gameObject.SetActive(true);
-                slot1AmountText.text = amount.ToString();
+                if (i < inventoryGrid.childCount)
+                {
+                    Transform uiSlot = inventoryGrid.GetChild(i);
+                    Transform iconTransform = uiSlot.Find("Item_Icon");
+                    Transform txtTransform = uiSlot.Find("TXT_Amount");
+
+                    if (iconTransform != null && txtTransform != null)
+                    {
+                        GameObject iconObj = iconTransform.gameObject;
+                        TMP_Text amountText = txtTransform.GetComponent<TMP_Text>();
+
+                        if (slotData.itemData != null && slotData.amount > 0)
+                        {
+                            iconObj.SetActive(true);
+                            iconObj.GetComponent<Image>().sprite = slotData.itemData.itemIcon;
+                            amountText.gameObject.SetActive(true);
+                            amountText.text = slotData.amount.ToString();
+                        }
+                        else
+                        {
+                            iconObj.SetActive(false);
+                            amountText.gameObject.SetActive(false);
+                        }
+                    }
+                }
             }
-            else
-            {
-                slot1Icon.SetActive(false);
-                slot1AmountText.gameObject.SetActive(false);
-            }
+            
         }
     }
 }
