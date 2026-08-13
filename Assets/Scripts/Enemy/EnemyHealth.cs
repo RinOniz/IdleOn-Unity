@@ -6,7 +6,7 @@ public class EnemyHealth : MonoBehaviour
     private EnemyStats stats;
     private Animator animator;
 
-    private int currentHp;
+    public int currentHp;
 
     public event Action OnEnemyDeath;
 

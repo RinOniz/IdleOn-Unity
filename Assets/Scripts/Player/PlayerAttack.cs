@@ -7,6 +7,7 @@ public class PlayerAttack : MonoBehaviour
     public float attackSpeed = 1.0f;
 
     public EnemyHealth currentTarget;
+    public GameObject damagePopupPrefab;
 
     private PlayerStats playerStats;
     private PlayerMovement playerMovement;
@@ -43,6 +44,19 @@ public class PlayerAttack : MonoBehaviour
 
     private void Attack()
     {
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
+    }
+
+    public void DealDamageHit()
+    {
+        if (currentTarget == null)
+        {
+            return;
+        }
+
         EnemyStats enemyStats = currentTarget.GetComponent<EnemyStats>();
 
         int damage = playerStats.attack - enemyStats.defense;
@@ -51,12 +65,15 @@ public class PlayerAttack : MonoBehaviour
 
         currentTarget.TakeDamage(damage);
 
-        if (animator != null)
-        {
-            animator.SetTrigger("Attack");
-        }
-
         Debug.Log($"Attack {currentTarget.name} for {damage} damage");
+
+        if (damagePopupPrefab != null)
+        {
+            Vector3 randomOffset = new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(0.5f, 1f), 0);
+            GameObject popup = Instantiate(damagePopupPrefab, currentTarget.transform.position + randomOffset, Quaternion.identity);
+            
+            popup.GetComponent<DamagePopup>().Setup(damage);
+        }
     }
 
     private void OnDrawGizmosSelected()
