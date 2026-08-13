@@ -11,6 +11,7 @@ public class EnemyMovement : MonoBehaviour
 
     private Rigidbody2D rb;
     private EnemyHealth enemyHealth;
+    private Animator animator;
 
     private int moveDirection = 0;
 
@@ -19,6 +20,7 @@ public class EnemyMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         enemyHealth = GetComponent<EnemyHealth>();
+        animator = GetComponentInChildren<Animator>();
 
         StartCoroutine(WanderRoutine());
     }
@@ -26,6 +28,11 @@ public class EnemyMovement : MonoBehaviour
     private void FixedUpdate()
     {
         rb.linearVelocity = new Vector2(moveDirection * moveSpeed, rb.linearVelocity.y);
+
+        if (animator != null)
+        {
+            animator.SetBool("isMoving", moveDirection != 0);
+        }   
     }
 
     private IEnumerator WanderRoutine()

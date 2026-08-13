@@ -7,8 +7,10 @@ public class PlayerAttack : MonoBehaviour
     public float attackSpeed = 1.0f;
 
     public EnemyHealth currentTarget;
+
     private PlayerStats playerStats;
     private PlayerMovement playerMovement;
+    private Animator animator;
 
     private float attackTimer;
 
@@ -17,6 +19,7 @@ public class PlayerAttack : MonoBehaviour
     {
         playerStats = GetComponent<PlayerStats>();
         playerMovement = GetComponent<PlayerMovement>();
+        animator = GetComponentInChildren<Animator>();
 
         attackTimer = 100f;
     }
@@ -47,6 +50,11 @@ public class PlayerAttack : MonoBehaviour
         damage = Mathf.Max(1, damage);
 
         currentTarget.TakeDamage(damage);
+
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
 
         Debug.Log($"Attack {currentTarget.name} for {damage} damage");
     }

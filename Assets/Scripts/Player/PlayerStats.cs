@@ -26,7 +26,7 @@ public class PlayerStats : MonoBehaviour
     {
         currentHP = maxHP;
 
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     // Update is called once per frame

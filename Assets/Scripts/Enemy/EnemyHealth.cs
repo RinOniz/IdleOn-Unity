@@ -4,6 +4,7 @@ using System;
 public class EnemyHealth : MonoBehaviour
 {
     private EnemyStats stats;
+    private Animator animator;
 
     private int currentHp;
 
@@ -13,6 +14,7 @@ public class EnemyHealth : MonoBehaviour
     private void Start()
     {
         stats = GetComponent<EnemyStats>();
+        animator = GetComponentInChildren<Animator>();
 
         currentHp = stats.maxHP;
     }
@@ -26,6 +28,11 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHp -= damage;
+
+        if (animator != null)
+        {
+            animator.SetTrigger("Hit");
+        }
 
         if (currentHp <= 0)
         {
@@ -49,6 +56,11 @@ public class EnemyHealth : MonoBehaviour
 
         OnEnemyDeath?.Invoke();
 
-        Destroy(gameObject);
+        if (animator != null)
+        {
+            animator.SetTrigger("Death");
+        }
+
+        Destroy(gameObject, 1f);
     }
 }

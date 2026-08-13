@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D rb;
     private PlayerAttack playerAttack;
+    private Animator animator;
 
     private float moveInput;
     private bool isFacingRight = true;
@@ -17,12 +18,27 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         playerAttack = GetComponent<PlayerAttack>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (!isAuto)
+        bool isAttacking = false;
+
+        if (animator != null)
+        {
+            bool currentIsAttack = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
+            bool nextIsAttack = animator.GetNextAnimatorStateInfo(0).IsName("Attack");
+
+            isAttacking = currentIsAttack || nextIsAttack;
+        }
+
+        if (isAttacking)
+        {
+            moveInput = 0f;
+        }
+        else if (!isAuto)
         {
             moveInput = Input.GetAxisRaw("Horizontal");
         }
@@ -62,7 +78,25 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        bool isAttacking = false;
+        if (animator != null)
+        {
+            isAttacking = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || animator.GetNextAnimatorStateInfo(0).IsName("Attack");
+        }
+
+        if (isAttacking)
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        }
+
+        if (animator != null)
+        {
+            animator.SetBool("isWalking", moveInput != 0);
+        }
     }
 
     private void CheckFlip()
