@@ -74,4 +74,12 @@ public class UIManager : MonoBehaviour
             
         }
     }
+
+    public void ToggleInventoryButton()
+    {
+        if (characterUIPanel != null)
+        {
+            characterUIPanel.SetActive(!characterUIPanel.activeSelf);
+        }
+    }
 }
