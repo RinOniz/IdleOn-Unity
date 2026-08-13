@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] private float attackRange = 2.0f;
-    [SerializeField] private float attackCooldown = 1.0f;
+    [Header("Attack Stats")]
+    public float attackRange = 2.0f;
+    public float attackSpeed = 1.0f;
 
-    private EnemyHealth currentTarget;
+    public EnemyHealth currentTarget;
     private PlayerStats playerStats;
+    private PlayerMovement playerMovement;
 
     private float attackTimer;
 
@@ -14,6 +16,9 @@ public class PlayerAttack : MonoBehaviour
     private void Start()
     {
         playerStats = GetComponent<PlayerStats>();
+        playerMovement = GetComponent<PlayerMovement>();
+
+        attackTimer = 100f;
     }
 
     // Update is called once per frame
@@ -21,7 +26,16 @@ public class PlayerAttack : MonoBehaviour
     {
         currentTarget = FindNearestEnemy();
 
-        AutoAttack();
+        attackTimer += Time.deltaTime;
+
+        if (playerMovement != null && playerMovement.isAuto)
+        {
+            AutoAttack();
+        }
+        else
+        {
+            ManualAttack();
+        }
     }
 
     private void Attack()
@@ -45,24 +59,24 @@ public class PlayerAttack : MonoBehaviour
 
     private EnemyHealth FindNearestEnemy()
     {
-        EnemyHealth[] enemies = FindObjectsByType<EnemyHealth>(FindObjectsSortMode.None);
+        EnemyHealth[] enemies = FindObjectsByType<EnemyHealth>(FindObjectsSortMode.None); 
 
         EnemyHealth nearestEnemy = null;
 
-        float nearestDistance = Mathf.Infinity;
+        float nearestDistance = Mathf.Infinity; 
 
-        foreach (EnemyHealth enemy in enemies)
+        foreach (EnemyHealth enemy in enemies) 
         {
-            float distance = Vector2.Distance(transform.position, enemy.transform.position);
+            float distance = Vector2.Distance(transform.position, enemy.transform.position); 
 
-            if (distance < nearestDistance)
+            if (distance < nearestDistance) 
             {
-                nearestDistance = distance;
-                nearestEnemy = enemy;
+                nearestDistance = distance; 
+                nearestEnemy = enemy; 
             }
         }
 
-        return nearestEnemy;
+        return nearestEnemy; 
     }
 
     private void AutoAttack()
@@ -73,28 +87,34 @@ public class PlayerAttack : MonoBehaviour
         {
             float distance = Vector2.Distance(transform.position, currentTarget.transform.position);
 
-            if (distance <= attackRange && attackTimer >= attackCooldown)
+            float cooldownRequired = 1.0f / attackSpeed;
+
+            if (distance <= attackRange && attackTimer >= cooldownRequired)
             {
                 Attack();
 
                 attackTimer = 0f;
             }
         }
+    }
 
-        //// Manual Attack 
-        //if (Input.GetKeyDown(KeyCode.LeftAlt))
-        //{
-        //    if (currentTarget != null)
-        //    {
-        //        float distance = Vector2.Distance(transform.position, currentTarget.transform.position);
+    private void ManualAttack()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            if (currentTarget != null)
+            {
+                float distance = Vector2.Distance(transform.position, currentTarget.transform.position);
 
-        //        if (distance <= attackRange && attackTimer >= attackCooldown)
-        //        {
-        //            Attack();
+                float cooldownRequired = 1.0f / attackSpeed;
 
-        //            attackTimer = 0f;
-        //        }
-        //    }
-        //}
+                if (distance <= attackRange && attackTimer >= cooldownRequired)
+                {
+                    Attack();
+
+                    attackTimer = 0f;
+                }
+            }
+        }
     }
 }

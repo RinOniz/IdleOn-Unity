@@ -19,6 +19,9 @@ public class UIManager : MonoBehaviour
     [Header("Inventory UI")]
     public Transform inventoryGrid;
 
+    [Header("Auto Mode")]
+    public bool isAutoModeOn = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -81,5 +84,22 @@ public class UIManager : MonoBehaviour
         {
             characterUIPanel.SetActive(!characterUIPanel.activeSelf);
         }
+    }
+
+    public void ToggleAutoModeButton()
+    {
+        isAutoModeOn = !isAutoModeOn;
+
+        if (playerStats != null)
+        {
+            PlayerMovement playerMovement = playerStats.GetComponent<PlayerMovement>();
+
+            if (playerMovement != null)
+            {
+                playerMovement.isAuto = isAutoModeOn;
+            }
+        }
+
+        Debug.Log($"Auto Mode is now {(isAutoModeOn ? "ON" : "OFF")}");
     }
 }
