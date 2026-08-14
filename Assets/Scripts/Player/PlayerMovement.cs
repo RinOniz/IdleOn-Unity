@@ -19,6 +19,18 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerAttack = GetComponent<PlayerAttack>();
         animator = GetComponentInChildren<Animator>();
+
+        if (!string.IsNullOrEmpty(Portal.targetSpawnName))
+        {
+            GameObject spawnPoint = GameObject.Find(Portal.targetSpawnName);
+
+            if (spawnPoint != null)
+            {
+                transform.position = spawnPoint.transform.position;
+            }
+
+            Portal.targetSpawnName = "";
+        }
     }
 
     // Update is called once per frame
