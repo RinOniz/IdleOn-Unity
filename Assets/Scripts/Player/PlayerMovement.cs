@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5.0f;
+    [SerializeField] private float movementSpeed = 5.0f;
 
     public bool isAuto = false;
 
@@ -19,18 +20,6 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerAttack = GetComponent<PlayerAttack>();
         animator = GetComponentInChildren<Animator>();
-
-        if (!string.IsNullOrEmpty(Portal.targetSpawnName))
-        {
-            GameObject spawnPoint = GameObject.Find(Portal.targetSpawnName);
-
-            if (spawnPoint != null)
-            {
-                transform.position = spawnPoint.transform.position;
-            }
-
-            Portal.targetSpawnName = "";
-        }
     }
 
     // Update is called once per frame
@@ -102,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(moveInput * movementSpeed, rb.linearVelocity.y);
         }
 
         if (animator != null)
@@ -132,5 +121,32 @@ public class PlayerMovement : MonoBehaviour
         localScale.x *= -1f;
 
         transform.localScale = localScale;
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (!string.IsNullOrEmpty(Portal.targetSpawnName))
+        {
+            // Đi tìm cái cột mốc mang tên đó
+            GameObject spawnPoint = GameObject.Find(Portal.targetSpawnName);
+            if (spawnPoint != null)
+            {
+                // Dịch chuyển Player đến đúng chỗ
+                transform.position = spawnPoint.transform.position;
+            }
+
+            // Xóa bộ nhớ
+            Portal.targetSpawnName = "";
+        }
     }
 }

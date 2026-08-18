@@ -4,20 +4,32 @@ using UnityEngine.UIElements;
 
 public class PlayerStats : MonoBehaviour
 {
-    [Header("Level")]
+    [Header("Core Stats")]
     public int level = 1;
-
-    [Header("Experience")]
-    public int currentExp = 0;
-    public int requiredExp = 10;
-
-    [Header("Combat Stats")]
-    public int attack = 5;
-    public int defense = 0;
-
-    [Header("Health")]
     public int maxHP = 100;
-    public int currentHP;
+    public int currentHP = 100;
+    public int maxMP = 50;
+    public int currentMP = 50;
+    public int currentExp = 0;
+    public int requiredExp = 20;
+
+    public int minDamage = 5;
+    public int maxDamage = 10;
+
+    public int attack = 5;
+    public int defense = 5;
+
+    [Header("RPG Attributes")]
+    public int str = 10; 
+    public int agi = 10; 
+    public int wis = 10; 
+    public int luk = 10; 
+
+    [Header("Advanced Stats")]
+    public float critChance = 5.0f; // 5% crit
+    public float critDamage = 1.5f; // x1.5 dmg
+    public int accuracy = 20; 
+    public float movementSpeed = 100f; 
 
     private SpriteRenderer spriteRenderer;
 
@@ -76,6 +88,8 @@ public class PlayerStats : MonoBehaviour
             level++;
 
             attack += 2;
+            minDamage += 2;
+            maxDamage += 2;
 
             maxHP += 5;
 

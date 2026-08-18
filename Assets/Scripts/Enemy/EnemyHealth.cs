@@ -29,10 +29,10 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHp -= damage;
 
-        if (animator != null)
-        {
-            animator.SetTrigger("Hit");
-        }
+        //if (animator != null)
+        //{
+        //    animator.SetTrigger("Hit");
+        //}
 
         if (currentHp <= 0)
         {

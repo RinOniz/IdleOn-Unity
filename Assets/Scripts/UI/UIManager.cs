@@ -22,6 +22,21 @@ public class UIManager : MonoBehaviour
     [Header("Auto Mode")]
     public bool isAutoModeOn = false;
 
+    [Header("Stats UI")]
+    public TMP_Text txtLevel;
+    public TMP_Text txtMaxHP;
+    public TMP_Text txtMaxMP;
+    public TMP_Text txtDamage;
+    public TMP_Text txtStr;
+    public TMP_Text txtAgi;
+    public TMP_Text txtWis;
+    public TMP_Text txtLuk;
+    public TMP_Text txtCritChance;
+    public TMP_Text txtCritDamage;
+    public TMP_Text txtAccuracy;
+    public TMP_Text txtDefense;
+    public TMP_Text txtMoveSpeed;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -34,6 +49,11 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             characterUIPanel.SetActive(!characterUIPanel.activeSelf);
+
+            if (characterUIPanel.activeSelf)
+            {
+                UpdateStatsUI();
+            }
         }
 
         if (playerStats != null)
@@ -75,6 +95,29 @@ public class UIManager : MonoBehaviour
                 }
             }
             
+        }
+    }
+
+    private void UpdateStatsUI()
+    {
+        if (playerStats != null)
+        {
+            txtLevel.text = "LV: " + playerStats.level;
+            txtMaxHP.text = "  Max HP: " + playerStats.maxHP;
+            txtMaxMP.text = "  Max MP: " + playerStats.maxMP;
+
+            txtDamage.text = "  Damage: " + playerStats.minDamage + "~" + playerStats.maxDamage;
+
+            txtStr.text = "  STR: " + playerStats.str;
+            txtAgi.text = "  AGI: " + playerStats.agi;
+            txtWis.text = "  WIS: " + playerStats.wis;
+            txtLuk.text = "  LUK: " + playerStats.luk;
+
+            txtCritChance.text = "  Crit Chance: " + playerStats.critChance + "%";
+            txtCritDamage.text = "  Crit Damage: " + playerStats.critDamage + "x";
+            txtAccuracy.text = "  Accuracy: " + playerStats.accuracy;
+            txtDefense.text = "  Defence: " + playerStats.defense;
+            txtMoveSpeed.text = "  Movement Speed: " + playerStats.movementSpeed + "%";
         }
     }
 
