@@ -15,6 +15,7 @@ MemoryCaptures/
 .vs/
 *.csproj
 *.sln
+*.slnx
 *.user
 *.suo
 
